@@ -1,0 +1,27 @@
+services:
+  app:
+    container_name: lab7-backend
+    build: .
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run debug
+
+  mysql:
+    container_name: lab7-mysql
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: course7
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
